@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleccionar Personaje</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #111;
+            color: white;
+            text-align: center;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+        .personaje {
+            border: 2px solid white;
+            padding: 10px;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .personaje:hover {
+            transform: scale(1.1);
+        }
+        .vista-previa {
+            margin-top: 20px;
+            display: none;
+            text-align: center;
+        }
+        .vista-previa img {
+            width: 200px;
+            height: auto;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Selecciona tu Personaje</h1>
+    <div class="grid" id="listaPersonajes">
+        <!-- Personajes se generarán aquí dinámicamente -->
+    </div>
+    <div class="vista-previa" id="vistaPrevia">
+        <h2 id="nombrePersonaje"></h2>
+        <img id="imagenPersonaje" src="" alt="">
+        <p id="descripcionPersonaje"></p>
+        <p><strong>Vida:</strong> <span id="vidaPersonaje"></span></p>
+        <p><strong>Habilidades:</strong> <span id="habilidadesPersonaje"></span></p>
+        <button onclick="confirmarSeleccion()">Seleccionar</button>
+    </div>
+
+    <script>
+        const personajes = [
+            { nombre: "Ben 10", imagen: "ben10.png", descripcion: "El portador del Omnitrix.", vida: 8000, habilidades: "Cada 6 turnos podrá transformarse en un alien y atacar." },
+            { nombre: "Kevin 11", imagen: "kevin11.png", descripcion: "Absorbe la energía de objetos y seres vivos.", vida: 10000, habilidades: "Su transformación le da una vida elevada." },
+            { nombre: "Gwen", imagen: "Gwen.png", descripcion: "Experta en magia y energía mana.", vida: 7000, habilidades: "Cada 4 turnos lanza un hechizo de 1500 de daño." }
+        ];
+
+        function mostrarPersonajes() {
+            const lista = document.getElementById("listaPersonajes");
+            personajes.forEach((p, index) => {
+                const div = document.createElement("div");
+                div.classList.add("personaje");
+                div.innerHTML = `<img src="${p.imagen}" width="100"><p>${p.nombre}</p>`;
+                div.onclick = () => mostrarVistaPrevia(index);
+                lista.appendChild(div);
+            });
+        }
+
+        function mostrarVistaPrevia(index) {
+            const personaje = personajes[index];
+            document.getElementById("nombrePersonaje").innerText = personaje.nombre;
+            document.getElementById("imagenPersonaje").src = personaje.imagen;
+            document.getElementById("descripcionPersonaje").innerText = personaje.descripcion;
+            document.getElementById("vidaPersonaje").innerText = personaje.vida;
+            document.getElementById("habilidadesPersonaje").innerText = personaje.habilidades;
+            document.getElementById("vistaPrevia").style.display = "block";
+        }
+
+        function confirmarSeleccion() {
+            let nombre = document.getElementById("nombrePersonaje").innerText;
+            seleccionarPersonaje(nombre);
+        }
+
+        function seleccionarPersonaje(nombre) {
+            let personaje = {};
+
+            switch (nombre) {
+                case "Ben 10":
+                    personaje = {
+                        nombre: "Ben 10",
+                        vida: 8000,
+                        habilidad: "Cada 6 turnos se transforma en un alien aleatorio y ataca.",
+                        transformacion: true,
+                        turnosParaTransformarse: 6
+                    };
+                    break;
+                case "Gwen":
+                    personaje = {
+                        nombre: "Gwen",
+                        vida: 7000,
+                        habilidad: "Cada 4 turnos puede lanzar un hechizo de 1500 de daño.",
+                        hechizoTurnos: 4
+                    };
+                    break;
+                case "Kevin 11":
+                    personaje = {
+                        nombre: "Kevin 11",
+                        vida: 10000,
+                        habilidad: "Su transformación le da una vida elevada.",
+                    };
+                    break;
+            }
+
+            // Guardar la selección en localStorage
+            localStorage.setItem("personajeSeleccionado", JSON.stringify(personaje));
+
+            // Redirigir al campo de batalla
+            window.location.href = "campo_batalla.html";
+        }
+
+        mostrarPersonajes();
+    </script>
+<button onclick="window.location.href='campo_batalla.html'">Siguiente</button>
+</body>
+</html>
+

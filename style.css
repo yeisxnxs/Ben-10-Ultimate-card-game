@@ -1,0 +1,44 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+}
+
+.icono {
+    width: 180px;
+    height: 180px;
+    background-size: cover;
+    border-radius: 10px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+
+.icono:hover {
+    transform: rotateY(10deg) translateY(-5px);
+    box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.7);
+}
+
+#iniciarJuego {
+    width: 180px;
+    height: 180px;
+    background-image: url('ben10.png');
+    background-size: cover;
+}
+
+#mazo {
+    background-image: url('mazo_icon.png');
+}
+
+#tiendaCartas {
+    background-image: url('tienda_cartas_icon.png');
+}
+
+#tiendaPaquetes {
+    background-image: url('paquetes_icon.png');
+}
+
+#arenas {
+    background-image: url('arenas_icon.png');
+}
+

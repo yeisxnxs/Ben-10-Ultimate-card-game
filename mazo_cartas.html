@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Selección de Mazo</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #222;
+            color: white;
+            text-align: center;
+        }
+        .contenedor {
+            display: flex;
+            justify-content: space-around;
+            padding: 20px;
+        }
+        .cartas, .mazo {
+            width: 45%;
+            border: 2px solid white;
+            padding: 10px;
+            min-height: 300px;
+        }
+        .carrusel {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+            gap: 10px;
+            width: 100%;
+            overflow: hidden;
+            position: relative;
+            justify-content: center;
+        }
+        .carta {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 180px;
+            height: 240px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+            overflow: hidden;
+        }
+        .carta img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+        .boton {
+            margin: 10px;
+            padding: 10px 20px;
+            background: gold;
+            color: black;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Construcción de Mazo</h1>
+    <div class="contenedor">
+        <div class="cartas">
+            <h2>Cartas Disponibles</h2>
+            <button class="boton" onclick="anteriorPagina()">⟨</button>
+            <button class="boton" onclick="siguientePagina()">⟩</button>
+            <div class="carrusel" id="listaCartas"></div>
+        </div>
+        <div class="mazo">
+            <h2>Tu Mazo (0/30)</h2>
+            <div class="carrusel" id="listaMazo"></div>
+        </div>
+    </div>
+    <button class="boton" onclick="guardarMazo()">Guardar Mazo</button>
+    <button class="boton" onclick="window.location.href='index.html'">Volver al Menú Principal</button>
+    
+    <script>
+        let cartasDisponibles = [
+            { nombre: "Multiojos", imagen: "multiojos.png" },
+            { nombre: "Fuego Infernal", imagen: "fuego_infernal.png" },
+            { nombre: "Rayo Cósmico", imagen: "rayo_cosmico.png" },
+            { nombre: "Escudo de Energía", imagen: "escudo_energia.png" },
+            { nombre: "Curación Mística", imagen: "curacion_mistica.png" },
+            { nombre: "Tornado Veloz", imagen: "tornado_veloz.png" },
+            { nombre: "Impacto Titánico", imagen: "impacto_titanico.png" },
+            { nombre: "Llama Oscura", imagen: "llama_oscura.png" },
+            { nombre: "Teletransportación", imagen: "teletransportacion.png" },
+            { nombre: "Multiojos", imagen: "multiojos.png" },
+            { nombre: "Llamarada", imagen: "llamarada.png" },
+            { nombre: "Bestia", imagen: "bestia.png" },
+            { nombre: "Diamantino", imagen: "diamantino.png" },
+            { nombre: "Insectoide", imagen: "insectoide.png" },
+            { nombre: "Ultra T", imagen: "ultra_t.png" },
+            { nombre: "Fantasmático", imagen: "fantasmatico.png" },
+            { nombre: "Mega Impacto", imagen: "mega_impacto.png" },
+            { nombre: "Ecoestruendo", imagen: "ecoestruendo.png" },
+            { nombre: "XLR8", imagen: "xlr8.png" },
+            { nombre: "Cuatrobrazos", imagen: "cuatrobrazos.png" },
+            { nombre: "Cañonbolt", imagen: "cañonbolt.png" },
+            { nombre: "Vilgax", imagen: "vilgax.png" },
+            { nombre: "Kevin", imagen: "kevin.png" },
+            { nombre: "Gwen", imagen: "gwen.png" },
+            { nombre: "Ben 10", imagen: "ben10.png" },
+            { nombre: "Hex", imagen: "hex.png" },
+            { nombre: "Zombozo", imagen: "zombozo.png" },
+            { nombre: "Doctor Animo", imagen: "animo.png" },
+            { nombre: "Reloj Omnitrix", imagen: "omnitrix.png" },
+            { nombre: "Látigo de Agua", imagen: "latigo_agua.png" },
+            { nombre: "Guante de Poder", imagen: "guante_poder.png" },
+            { nombre: "Rayo Láser", imagen: "rayo_laser.png" },
+            { nombre: "Vulcanus", imagen: "vulcanus.png" },
+            { nombre: "Simian", imagen: "simian.png" },
+            { nombre: "Rath", imagen: "rath.png" },
+            { nombre: "Upgrade", imagen: "upgrade.png" },
+            { nombre: "Bullfrag", imagen: "bullfrag.png" },
+            { nombre: "Omnimonstruo", imagen: "omnimonstruo.png" },
+            { nombre: "Psicovolt", imagen: "psicovolt.png" }
+        ];
+
+        
+        let mazo = [];
+        let paginaActual = 0;
+        const cartasPorPagina = 3; // 1x3 en cada página
+
+        function mostrarCartas() {
+            let listaCartas = document.getElementById("listaCartas");
+            listaCartas.innerHTML = "";
+            let inicio = paginaActual * cartasPorPagina;
+            let fin = inicio + cartasPorPagina;
+            let cartasPagina = cartasDisponibles.slice(inicio, fin);
+            
+            cartasPagina.forEach((carta, index) => {
+                let div = document.createElement("div");
+                div.classList.add("carta");
+                div.innerHTML = `<img src="${carta.imagen}" alt="${carta.nombre}">`;
+                div.onclick = () => agregarAlMazo(inicio + index);
+                listaCartas.appendChild(div);
+            });
+        }
+        
+        function mostrarMazo() {
+            let listaMazo = document.getElementById("listaMazo");
+            listaMazo.innerHTML = "";
+            mazo.slice(-3).forEach((carta, index) => { // Mostrar solo las últimas 3 cartas añadidas
+                let div = document.createElement("div");
+                div.classList.add("carta");
+                div.innerHTML = `<img src="${carta.imagen}" alt="${carta.nombre}">`;
+                div.onclick = () => quitarDelMazo(index);
+                listaMazo.appendChild(div);
+            });
+            document.querySelector(".mazo h2").innerText = `Tu Mazo (${mazo.length}/30)`;
+        }
+
+        function agregarAlMazo(index) {
+            if (mazo.length < 30) {
+                mazo.push(cartasDisponibles[index]);
+                mostrarMazo();
+            }
+        }
+
+        function quitarDelMazo(index) {
+            mazo.splice(index, 1);
+            mostrarMazo();
+        }
+
+        function guardarMazo() {
+            if (mazo.length === 30) {
+                localStorage.setItem("mazoJugador", JSON.stringify(mazo));
+                alert("Mazo guardado correctamente");
+            } else {
+                alert("Tu mazo debe tener 30 cartas");
+            }
+        }
+
+        function siguientePagina() {
+            let maxPaginas = Math.ceil(cartasDisponibles.length / cartasPorPagina);
+            if (paginaActual < maxPaginas - 1) {
+                paginaActual++;
+                mostrarCartas();
+            }
+        }
+
+        function anteriorPagina() {
+            if (paginaActual > 0) {
+                paginaActual--;
+                mostrarCartas();
+            }
+        }
+
+        mostrarCartas();
+        mostrarMazo();
+    </script>
+</body>
+</html>

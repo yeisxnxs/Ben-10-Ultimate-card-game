@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ben 10 Card Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        background: url('fondo.png') no-repeat center center;
+        background-size: cover;
+        color: white;
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: relative;
+    }
+    .icono {
+        width: 180px;
+        height: 180px;
+        background: url('default_icon.png') no-repeat center center;
+        background-size: cover;
+        border-radius: 10px;
+        box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+        transform-style: preserve-3d;
+        transform: rotateY(0deg);
+        transition: transform 0.3s, box-shadow 0.3s;
+        position: absolute;
+        cursor: pointer;
+    }
+    .icono:hover {
+        transform: rotateY(10deg) translateY(-5px);
+        box-shadow: 10px 10px 15px rgba(0, 0, 0, 0.7);
+    }
+    .icono::after {
+        content: attr(data-name);
+        position: absolute;
+        bottom: -30px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.7);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        opacity: 0;
+        transition: opacity 0.3s;
+    }
+    .icono:hover::after {
+        opacity: 1;
+    }
+    
+    /* Posicionamiento de los iconos */
+    #iniciarJuego { top: 20%; left: 50%; }
+    #mazo { top: 40%; left: 70%; }
+    #tiendaCartas { top: 65%; left: 25%; }
+    #tiendaPaquetes { top: 10%; left: 15%; }
+    #arenas { top: 60%; left: 50%; }
+</style>
+</head>
+<body>
+    <div class="icono" id="iniciarJuego" data-name="Iniciar Juego" 
+         style="background-image: url('ben10.png');" 
+         onclick="window.location.href='selecciondepersonaje.html'">
+    </div>
+    <div class="icono" id="mazo" data-name="Mazo y Cartas" 
+         style="background-image: url('mazo.png');" 
+         onclick="window.location.href='mazo_cartas.html'">
+    </div>
+    <div class="icono" id="tiendaCartas" data-name="Tienda de Cartas" 
+         style="background-image: url('cartas.png');" 
+         onclick="mostrarTiendaCartas()">
+    </div>
+    <div class="icono" id="tiendaPaquetes" data-name="Tienda de Paquetes" 
+         style="background-image: url('paquete.png');" 
+         onclick="mostrarTiendaPaquetes()">
+    </div>
+    <div class="icono" id="arenas" data-name="Arenas" 
+         style="background-image: url('planeta.png');" 
+         onclick="mostrarArenas()">
+    </div>
+    
+    <script>
+        function mostrarTiendaCartas() {
+            alert("Bienvenido a la tienda de cartas individuales.");
+        }
+        function mostrarTiendaPaquetes() {
+            alert("Aquí podrás comprar paquetes de cartas.");
+        }
+        function mostrarArenas() {
+            alert("Selecciona una arena para jugar en modo clasificatorio.");
+        }
+    </script>
+</body>
+</html>
